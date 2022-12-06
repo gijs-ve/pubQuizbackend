@@ -4,3 +4,4 @@ const addPlayerToPlayers = (socketId, playerName, players) => {
     newPlayers.push(player);
     return newPlayers;
 };
+module.exports = addPlayerToPlayers;
