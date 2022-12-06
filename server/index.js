@@ -17,7 +17,7 @@ const addPlayerToRoom = require('/functions/addPlayerToRoom');
 const findPlayerBySocketId = require('/functions/findPlayerBySocketId');
 const createRoom = require('/functions/createRoom');
 
-let rooms = [];
+let roomState = [];
 let players = [];
 
 app.use(corsMiddleWare());
@@ -25,19 +25,27 @@ app.use(express.json());
 
 //Every socket.on and socket.emit needs to be wrapped around "io.on('connection, socket)"
 io.on('connection', (socket) => {
-    socket.on('joinRoom', (roomId) => {
+    socket.on('joinRoom', (data) => {
+        const { roomId, name } = data;
         const player = findPlayerBySocketId(socket.id);
-        rooms = addPlayerToRoom(player, roomId, rooms);
-        io.emit('roomUpdate', rooms);
+        roomState = addPlayerToRoom(player, roomId, roomState);
+        io.emit('roomUpdate', roomState);
     });
 
     //event when client wants to host a game
     socket.on('createRoom', (data) => {
         const { name } = data;
         const player = findPlayerBySocketId(socket.id);
-        rooms = createRoom(info, player, rooms);
+        roomState = createRoom(info, player, roomState);
         players = addPlayerToPlayers(socket.id, name, players);
-        io.emit('roomUpdate', rooms);
+        io.emit('roomUpdate', roomState);
+    });
+
+    //event to handle the client choosing an answer. May be called by client multiple times until timer runs out
+    //in order to refresh their answer
+    socket.on('lockQuestion', (answerId, roomId) => {
+        const player = findPlayerBySocketId(socket.id);
+        roomState = setAnswerFronPlayer(answerId, player, roomId, roomState);
     });
 });
 
