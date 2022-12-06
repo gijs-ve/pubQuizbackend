@@ -1,11 +1,15 @@
-//creates a new room and returns the new room list
-const createRoom = (createInfo, player, rooms) => {
-  const { uuid } = require('uuidv4');
- const {quiz, playerCount} = createInfo
-   const newRoom = {roomId: uuid(), host: player, players:[], roomState: "preLoad", questions: quiz}
-    const newRooms = rooms
-   newRooms.push(newRoom)
-   return newRooms
-
-}
-module.exports = createRoom
+//creates a new room and returns the new roomState, based on the old roomState
+const createRoom = (host, questions, roomState) => {
+    const { v4: uuidv4 } = require('uuid');
+    const newRoom = {
+        roomId: uuidv4().split('-')[0],
+        host,
+        players: [],
+        roomState: 'preLoad',
+        questions: questions,
+    };
+    const newRooms = roomState;
+    newRooms.push(newRoom);
+    return newRooms;
+};
+module.exports = createRoom;

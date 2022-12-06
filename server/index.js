@@ -41,27 +41,31 @@ io.on('connection', (socket) => {
     //event when client wants to host a game
     socket.on('createRoom', (data) => {
         try {
-            const { name } = data;
-            const player = findPlayerBySocketId(socket.id);
-            roomState = createRoom(info, player, roomState);
+            const { name, questions } = data;
             players = addPlayerToPlayers(socket.id, name, players);
+            const host = findPlayerBySocketId(socket.id, players);
+            roomState = createRoom(host, questions, roomState);
             io.emit('roomUpdate', roomState);
-        } catch {}
+        } catch (error) {
+            console.log(error);
+        }
     });
 
     //event to handle the client choosing an answer. May be called by client multiple times until timer runs out
     //in order to refresh their answer
-    socket.on('lockQuestion', (answerId, roomId) => {
+    socket.on('lockAnswer', (answerId, roomId) => {
         const player = findPlayerBySocketId(socket.id);
         roomState = setAnswerFronPlayer(answerId, player, roomId, roomState);
     });
 
     //development event to get the rooms and players displayed in terminal
-    socket.on('getRooms', () => {
+    socket.on('getData', () => {
         try {
-            console.log(rooms);
+            console.log(roomState);
             console.log(players);
-        } catch {}
+        } catch (error) {
+            console.log(error);
+        }
     });
 });
 
