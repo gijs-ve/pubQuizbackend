@@ -1,4 +1,4 @@
-const createGame = (createInfo) => {
+const createGame = (createInfo, rooms) => {
  const {hostName, categories, playerCount} = createInfo
  let {questionCount} = createInfo
  if (questionCount >=20) {
@@ -9,4 +9,6 @@ const createGame = (createInfo) => {
 
     axios.get()
 
+    
 }
+module.exports = createGame

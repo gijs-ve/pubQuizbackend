@@ -7,3 +7,4 @@ const onPlayerConnection = (socketId, name, players) => {
     playerList.push({player})
     return playerList
 }
+module.exports = onPlayerConnection
