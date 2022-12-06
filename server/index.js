@@ -93,8 +93,8 @@ io.on('connection', (socket) => {
     //event to handle the start of the game by the host
     socket.on('startGame', (data) => {
         try {
-            // const { roomId } = data;
-            roomState = onStartGame(roomState[0].roomId, roomState, io);
+            const { roomId } = data;
+            roomState = onStartGame(roomId, roomState, io);
         } catch (error) {
             console.log(error);
         }
