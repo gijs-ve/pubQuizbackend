@@ -7,8 +7,8 @@ const createGame = (createInfo, rooms) => {
  if (isNaN(questionCount) || questionCount <= 5)
     questionCount = 5
 
-    axios.get()
+    axios.get("")
 
-    
+
 }
 module.exports = createGame
