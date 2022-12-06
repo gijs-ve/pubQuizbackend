@@ -25,7 +25,6 @@ app.use(express.json());
 
 //Every socket.on and socket.emit needs to be wrapped around "io.on('connection, socket)"
 io.on('connection', (socket) => {
-    players = addPlayerToPlayers(socketId, 'noName', players);
     socket.on('joinRoom', (roomId) => {
         const player = findPlayerBySocketId(socket.id);
         rooms = addPlayerToRoom(player, roomId, rooms);
@@ -33,10 +32,11 @@ io.on('connection', (socket) => {
     });
 
     //event when client wants to host a game
-    socket.on('createRoom', (info) => {
-        console.log(info);
+    socket.on('createRoom', (data) => {
+        const { name } = data;
         const player = findPlayerBySocketId(socket.id);
         rooms = createRoom(info, player, rooms);
+        players = addPlayerToPlayers(socket.id, name, players);
         io.emit('roomUpdate', rooms);
     });
 });
