@@ -4,8 +4,8 @@ const createRoom = (host, questions, roomState) => {
     const newRoom = {
         roomId: uuidv4().split('-')[0],
         host,
-        players: [],
-        roomState: 'preLoad',
+        players: [host],
+        roomStatus: 'preLoad',
         questions: questions,
     };
     const newRooms = roomState;
