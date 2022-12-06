@@ -8,6 +8,7 @@ const createRoom = (host, questions, roomState) => {
         host,
         players: [host],
         roomStatus: 'preLoad',
+        timer: null,
         questions: convertQuestions(questions),
         answers: convertQuestionsToAnswers(questions),
         currentQuestion: null,

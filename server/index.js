@@ -15,12 +15,21 @@ const io = new Server(server);
 const addPlayerToPlayers = require('./functions/addPlayerToPlayers');
 const addPlayerToRoom = require('./functions/addPlayerToRoom');
 const createRoom = require('./functions/createRoom');
+const countDown = require('./functions/countDown');
 const findRoomByRoomId = require('./functions/findRoomByRoomId');
 const findPlayerBySocketId = require('./functions/findPlayerBySocketId');
 const sendRoomStateToRoom = require('./functions/sendRoomStateToRoom');
 
 let roomState = [];
 let players = [];
+let timer = 0;
+
+//every second, the timer is decreased by 1 if necessary
+//by the countDown function
+const raiseTimer = () => {
+    roomState = countDown(roomState, io);
+};
+setInterval(raiseTimer, 1000);
 
 app.use(corsMiddleWare());
 app.use(express.json());
@@ -79,11 +88,18 @@ io.on('connection', (socket) => {
         }
     });
 
+    //event to handle the start of the game by the host
+    socket.on('startGame', (data) => {
+        const { roomId } = data;
+        roomState = onStartGame(roomId, roomState, io);
+    });
+
     //event to handle the client choosing an answer. May be called by client multiple times until timer runs out
     //in order to refresh their answer
-    socket.on('lockAnswer', (answerId, roomId) => {
+    socket.on('lockAnswer', (data) => {
+        const { answer, roomId } = data;
         const player = findPlayerBySocketId(socket.id);
-        roomState = setAnswerFronPlayer(answerId, player, roomId, roomState);
+        roomState = setAnswerFromPlayer(answer, player, roomId, roomState);
     });
 
     //development event to get the rooms and players displayed in terminal
