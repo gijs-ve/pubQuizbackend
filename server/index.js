@@ -23,10 +23,11 @@ const sendRoomStateToRoom = require('./functions/sendRoomStateToRoom');
 
 let roomState = [];
 let players = [];
-let timer = 0;
 
-//every second, the timer is decreased by 1 if necessary
-//by the countDown function
+//every second, the timer in EACH ROOM is decreased by 1 if necessary
+//by the countDown function. It takes the roomState, cause all the
+//rooms are inside the roomState. The new roomState is then updated
+//with the new times in each room.
 const raiseTimer = () => {
     roomState = countDown(roomState, io);
 };
@@ -91,16 +92,24 @@ io.on('connection', (socket) => {
 
     //event to handle the start of the game by the host
     socket.on('startGame', (data) => {
-        const { roomId } = data;
-        roomState = onStartGame(roomId, roomState, io);
+        try {
+            // const { roomId } = data;
+            roomState = onStartGame(roomState[0].roomId, roomState, io);
+        } catch (error) {
+            console.log(error);
+        }
     });
 
     //event to handle the client choosing an answer. May be called by client multiple times until timer runs out
     //in order to refresh their answer
     socket.on('lockAnswer', (data) => {
-        const { answer, roomId } = data;
-        const player = findPlayerBySocketId(socket.id);
-        roomState = setAnswerFromPlayer(answer, player, roomId, roomState);
+        try {
+            const { answer, roomId } = data;
+            const player = findPlayerBySocketId(socket.id);
+            roomState = setAnswerFromPlayer(answer, player, roomId, roomState);
+        } catch (error) {
+            console.log(error);
+        }
     });
 
     //development event to get the rooms and players displayed in terminal
