@@ -1,4 +1,6 @@
 //creates a new room and returns the new roomState, based on the old roomState
+const convertQuestions = require('./convertQuestions');
+const convertQuestionsToAnswers = require('./convertQuestionsToAnswers');
 const createRoom = (host, questions, roomState) => {
     const { v4: uuidv4 } = require('uuid');
     const newRoom = {
@@ -6,10 +8,12 @@ const createRoom = (host, questions, roomState) => {
         host,
         players: [host],
         roomStatus: 'preLoad',
-        questions: questions,
+        questions: convertQuestions(questions),
+        answers: convertQuestionsToAnswers(questions),
+        currentQuestion: null,
     };
     const newRooms = roomState;
     newRooms.push(newRoom);
-    return newRooms;
+    return { newRoomState: newRooms, room: newRoom };
 };
 module.exports = createRoom;

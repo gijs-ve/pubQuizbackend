@@ -42,9 +42,8 @@ io.on('connection', (socket) => {
             roomState = addPlayerToRoom(player, roomId, roomState);
             //find the room that we require to send the data to
             room = findRoomByRoomId(roomId, roomState);
-            //sent the new roomState to everyone
-            sendRoomStateToRoom(roomState, room, io);
-            // io.emit('roomUpdate', roomState);
+            //send the new roomState to everyone in the room
+            sendRoomStateToRoom(room, io);
         } catch (error) {
             console.log(error);
         }
@@ -65,9 +64,16 @@ io.on('connection', (socket) => {
             //and provide it with the newly added player, now host,
             //the questions
             //and the old roomState
-            roomState = createRoom(host, questions, roomState);
+            const { newRoomState, room } = createRoom(
+                host,
+                questions,
+                roomState,
+            );
+            roomState = newRoomState;
             //we send this new roomState to everyone that is connected
-            socket.emit('roomUpdate', roomState);
+            //to the newly created room
+            //socket.emit('roomUpdate', roomState);
+            sendRoomStateToRoom(room, io);
         } catch (error) {
             console.log(error);
         }
