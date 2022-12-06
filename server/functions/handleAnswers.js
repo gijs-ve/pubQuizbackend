@@ -1,4 +1,5 @@
 //function that handles the end of a question round, when the timer runs out
+const isAnswerCorrect = require('./isAnswerCorrect');
 const handleAnswers = (room) => {
     const newPlayers = room.players.map((i) => {
         if (

@@ -18,6 +18,7 @@ const createRoom = require('./functions/createRoom');
 const countDown = require('./functions/countDown');
 const findRoomByRoomId = require('./functions/findRoomByRoomId');
 const findPlayerBySocketId = require('./functions/findPlayerBySocketId');
+const onStartGame = require('./functions/onStartGame');
 const sendRoomStateToRoom = require('./functions/sendRoomStateToRoom');
 
 let roomState = [];

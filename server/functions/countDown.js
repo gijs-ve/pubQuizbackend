@@ -2,6 +2,7 @@
 //emits new roomStatus if necessary
 const extractQuestion = require('./extractQuestion');
 const sendRoomStateToRoom = require('./sendRoomStateToRoom');
+const handleAnswers = require('./handleAnswers');
 const countDown = (roomState, io) => {
     return roomState.map((i) => {
         if (i.roomStatus === 'question') {

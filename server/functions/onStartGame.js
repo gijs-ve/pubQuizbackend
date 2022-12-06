@@ -2,7 +2,7 @@ const extractQuestion = require('./extractQuestion');
 const sendRoomStateToRoom = require('./sendRoomStateToRoom');
 const onStartGame = (roomId, roomState, io) => {
     return roomState.map((i) => {
-        if (i.id === roomId) {
+        if (i.roomId === roomId) {
             const { question, newQuestions } = extractQuestion(i.questions);
             const newRoom = {
                 ...i,
@@ -14,6 +14,7 @@ const onStartGame = (roomId, roomState, io) => {
             sendRoomStateToRoom(newRoom, io);
             return newRoom;
         }
+        return i;
     });
 };
 module.exports = onStartGame;
