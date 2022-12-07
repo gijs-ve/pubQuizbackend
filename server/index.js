@@ -30,7 +30,11 @@ let players = [];
 //rooms are inside the roomState. The new roomState is then updated
 //with the new timers in each room.
 const raiseTimer = () => {
-    roomState = countDown(roomState, io);
+    try {
+        roomState = countDown(roomState, io);
+    } catch (error) {
+        console.log(error);
+    }
 };
 setInterval(raiseTimer, 1000);
 

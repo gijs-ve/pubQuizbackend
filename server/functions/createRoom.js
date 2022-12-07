@@ -12,6 +12,7 @@ const createRoom = (host, questions, roomState) => {
         questions: convertQuestions(questions),
         answers: convertQuestionsToAnswers(questions),
         currentQuestion: null,
+        previousAnswer: null,
     };
     const newRooms = roomState;
     newRooms.push(newRoom);

@@ -4,6 +4,7 @@ const addPlayerToPlayers = (socketId, playerName, imageUrl, players) => {
         name: playerName,
         score: 0,
         currentAnswer: '',
+        previousAnswer: '',
         imageUrl: imageUrl,
     };
     const newPlayers = players;

@@ -3,6 +3,8 @@
 const extractQuestion = require('./extractQuestion');
 const sendRoomStateToRoom = require('./sendRoomStateToRoom');
 const handleAnswers = require('./handleAnswers');
+const getAnswerFromQuestion = require('./getAnswerFromQuestion');
+
 const countDown = (roomState, io) => {
     return roomState.map((i) => {
         if (i.roomStatus === 'question') {
@@ -12,10 +14,15 @@ const countDown = (roomState, io) => {
                 return newRoom;
             }
             if (i.timer <= 0 && i.questions.length !== 0) {
+                console.log('ROOM', i);
                 const newRoom = {
                     ...i,
                     players: handleAnswers(i),
                     roomStatus: 'score',
+                    previousAnswer: getAnswerFromQuestion(
+                        i.answers,
+                        i.currentQuestion,
+                    ),
                     timer: 10,
                 };
                 sendRoomStateToRoom(newRoom, io);
@@ -26,6 +33,10 @@ const countDown = (roomState, io) => {
                     ...i,
                     players: handleAnswers(i),
                     roomStatus: 'endGame',
+                    previousAnswer: getAnswerFromQuestion(
+                        i.answers,
+                        i.currentQuestion,
+                    ),
                     timer: null,
                 };
                 sendRoomStateToRoom(newRoom, io);

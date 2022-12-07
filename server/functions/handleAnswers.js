@@ -5,9 +5,13 @@ const handleAnswers = (room) => {
         if (
             isAnswerCorrect(room.currentQuestion, i.currentAnswer, room.answers)
         ) {
-            return { ...i, score: i.score + 1 };
+            return {
+                ...i,
+                score: i.score + 1,
+                previousAnswer: i.currentAnswer,
+            };
         }
-        return i;
+        return { ...i, previousAnswer: i.currentAnswer };
     });
     return newPlayers;
 };
