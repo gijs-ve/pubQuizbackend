@@ -9,9 +9,10 @@ const handleAnswers = (room) => {
                 ...i,
                 score: i.score + 1,
                 previousAnswer: i.currentAnswer,
+                currentAnswer: null,
             };
         }
-        return { ...i, previousAnswer: i.currentAnswer };
+        return { ...i, previousAnswer: i.currentAnswer, currentAnswer: null };
     });
     return newPlayers;
 };
