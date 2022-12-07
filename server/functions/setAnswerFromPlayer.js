@@ -10,10 +10,9 @@ const setAnswerFromPlayer = (answer, player, roomId, roomState) => {
         }
         return i;
     });
-    room.players = newPlayerList;
     const newRoomState = roomState.map((i) => {
         if (i.roomId !== roomId) return i;
-        return room;
+        return { ...i, players: newPlayerList };
     });
     console.log(room.players);
     return newRoomState;
