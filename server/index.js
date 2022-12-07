@@ -43,11 +43,11 @@ io.on('connection', (socket) => {
         try {
             //retrieve the code (a roomId) and name from the data that
             //was sent
-            const { code, name } = data;
+            const { code, name, imageUrl } = data;
             const roomId = code;
             //use the old playerState, and add the new player with their
             //socketId and the name from the client input
-            players = addPlayerToPlayers(socket.id, name, players);
+            players = addPlayerToPlayers(socket.id, name, imageUrl, players);
             const player = findPlayerBySocketId(socket.id, players);
             //add the newly created player to the room, using the
             //old roomState and declaring the new roomState
@@ -66,10 +66,10 @@ io.on('connection', (socket) => {
         try {
             //retrieve the name and questions from the data that is sent
             //through createRoom
-            const { name, questions } = data;
+            const { name, questions, imageUrl } = data;
             //the new playerState (stored in the let players)
             //gets updated with the dedicatd function
-            players = addPlayerToPlayers(socket.id, name, players);
+            players = addPlayerToPlayers(socket.id, name, imageUrl, players);
             //inside the now updated playerState, we search for the host
             const host = findPlayerBySocketId(socket.id, players);
             //we update the roomState with the createRoom function
