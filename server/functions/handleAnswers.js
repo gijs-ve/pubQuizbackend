@@ -2,7 +2,6 @@
 const isAnswerCorrect = require('./isAnswerCorrect');
 const handleAnswers = (room) => {
     const newPlayers = room.players.map((i) => {
-        console.log(i);
         if (
             isAnswerCorrect(room.currentQuestion, i.currentAnswer, room.answers)
         ) {
