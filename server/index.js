@@ -19,6 +19,7 @@ const countDown = require('./functions/countDown');
 const findRoomByRoomId = require('./functions/findRoomByRoomId');
 const findPlayerBySocketId = require('./functions/findPlayerBySocketId');
 const onStartGame = require('./functions/onStartGame');
+const setAnswerFromPlayer = require('./functions/setAnswerFromPlayer');
 const sendRoomStateToRoom = require('./functions/sendRoomStateToRoom');
 
 let roomState = [];
@@ -27,7 +28,7 @@ let players = [];
 //every second, the timer in EACH ROOM is decreased by 1 if necessary
 //by the countDown function. It takes the roomState, cause all the
 //rooms are inside the roomState. The new roomState is then updated
-//with the new times in each room.
+//with the new timers in each room.
 const raiseTimer = () => {
     roomState = countDown(roomState, io);
 };
@@ -104,7 +105,8 @@ io.on('connection', (socket) => {
     socket.on('lockAnswer', (data) => {
         try {
             const { answer, roomId } = data;
-            const player = findPlayerBySocketId(socket.id);
+            if (!answer || !roomId) return;
+            const player = findPlayerBySocketId(socket.id, players);
             roomState = setAnswerFromPlayer(answer, player, roomId, roomState);
         } catch (error) {
             console.log(error);

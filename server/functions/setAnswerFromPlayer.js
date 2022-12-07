@@ -1,9 +1,10 @@
 //takes an answerId, player, roomId and the roomsList from the server state
 //returns the new roomState
+const findRoomByRoomId = require('./findRoomByRoomId');
 const setAnswerFromPlayer = (answer, player, roomId, roomState) => {
     const room = findRoomByRoomId(roomId, roomState);
     const newPlayerList = room.players.map((i) => {
-        if (room.status !== 'questions') return i;
+        if (room.roomStatus !== 'question') return i;
         if (i.id === player.id) {
             return { ...i, currentAnswer: answer };
         }
@@ -11,9 +12,10 @@ const setAnswerFromPlayer = (answer, player, roomId, roomState) => {
     });
     room.players = newPlayerList;
     const newRoomState = roomState.map((i) => {
-        if (i.id !== roomId) return i;
+        if (i.roomId !== roomId) return i;
         return room;
     });
+    console.log(room.players);
     return newRoomState;
 };
-modules.export = setAnswerFromPlayer;
+module.exports = setAnswerFromPlayer;
