@@ -11,7 +11,7 @@ const onStartGame = (roomId, roomState, io) => {
                 currentQuestion: question,
                 questions: newQuestions,
                 roomStatus: 'question',
-                timer: 25,
+                timer: 10,
             };
             sendRoomStateToRoom(newRoom, io);
             return newRoom;
