@@ -23,7 +23,7 @@ const countDown = (roomState, io) => {
                         i.answers,
                         i.currentQuestion,
                     ),
-                    timer: 10,
+                    timer: 5,
                 };
                 sendRoomStateToRoom(newRoom, io);
                 return newRoom;
@@ -56,7 +56,7 @@ const countDown = (roomState, io) => {
                     currentQuestion: question,
                     questions: newQuestions,
                     roomStatus: 'question',
-                    timer: 25,
+                    timer: 10,
                 };
                 sendRoomStateToRoom(newRoom, io);
                 return newRoom;
